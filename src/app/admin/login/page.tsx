@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
@@ -111,9 +112,9 @@ export default function AdminLoginPage() {
         <div className="text-center">
           <p className="text-sm text-gray-500">
             Zurück zur{' '}
-            <a href="/" className="text-blue-600 hover:text-blue-800">
+            <Link href="/" className="text-blue-600 hover:text-blue-800">
               Startseite
-            </a>
+            </Link>
           </p>
         </div>
       </div>
