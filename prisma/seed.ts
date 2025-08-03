@@ -55,13 +55,13 @@ async function main() {
 
   console.log('✅ Categories created')
 
-  // Create sample products
+  // Create sample products with upsert to avoid duplicate SKU errors
   const products = [
     {
+      sku: 'WH-001',
       title: 'Wireless Kopfhörer',
       description: 'Premium Bluetooth Kopfhörer mit Noise Cancelling',
       price: 199.99,
-      sku: 'WH-001',
       inventory: 25,
       status: 'ACTIVE' as const,
       slug: 'wireless-kopfhoerer',
@@ -70,11 +70,11 @@ async function main() {
       tags: ['bluetooth', 'kopfhörer', 'wireless']
     },
     {
+      sku: 'CASE-001',
       title: 'Smartphone Hülle',
       description: 'Robuste Schutzhülle für Smartphones',
       price: 29.99,
       comparePrice: 39.99,
-      sku: 'CASE-001',
       inventory: 50,
       status: 'ACTIVE' as const,
       slug: 'smartphone-huelle',
@@ -83,10 +83,10 @@ async function main() {
       tags: ['smartphone', 'schutz', 'hülle']
     },
     {
+      sku: 'TSHIRT-001',
       title: 'Designer T-Shirt',
       description: 'Hochwertiges T-Shirt aus Bio-Baumwolle',
       price: 49.99,
-      sku: 'TSHIRT-001',
       inventory: 30,
       status: 'ACTIVE' as const,
       slug: 'designer-t-shirt',
@@ -95,10 +95,10 @@ async function main() {
       tags: ['t-shirt', 'bio', 'designer']
     },
     {
+      sku: 'BAG-001',
       title: 'Leder Handtasche',
       description: 'Elegante Handtasche aus echtem Leder',
       price: 149.99,
-      sku: 'BAG-001',
       inventory: 15,
       status: 'ACTIVE' as const,
       slug: 'leder-handtasche',
@@ -109,7 +109,19 @@ async function main() {
   ]
 
   for (const product of products) {
-    await prisma.product.create({ data: product })
+    await prisma.product.upsert({
+      where: { sku: product.sku },
+      update: {
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        inventory: product.inventory,
+        status: product.status,
+        images: product.images,
+        tags: product.tags
+      },
+      create: product
+    })
   }
 
   console.log('✅ Sample products created')

@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "npx prisma migrate deploy && npx prisma db seed && next start",
-    
+    "start": "npx prisma migrate deploy || true && npx prisma db seed || true && next start",
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
