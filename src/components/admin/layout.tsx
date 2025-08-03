@@ -45,7 +45,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     )
   }
 
-  if (!session || session.user.role === "CUSTOMER") {
+  if (!session || !session.user) {
+    router.push("/admin/login")
+    return null
+  }
+
+  // Type assertion for our custom user type
+  const user = session.user as { role?: string }
+  if (user.role === "CUSTOMER") {
     router.push("/admin/login")
     return null
   }

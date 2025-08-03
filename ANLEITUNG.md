@@ -16,7 +16,7 @@ Diese Anleitung erklärt, wie Sie Ihr YB Store E-Commerce System vollständig au
    git add .
    git commit -m "Initial commit - YB Store"
    git branch -M main
-   git remote add origin https://github.com/IHR-USERNAME/yb-store.git
+   git remote add origin https://github.com/dstiehler97/yb-store.git
    git push -u origin main
    ```
 
@@ -52,7 +52,7 @@ Fügen Sie folgende Environment Variables in Railway hinzu:
 DATABASE_URL=postgresql://...
 
 # NextAuth
-NEXTAUTH_URL=https://ihr-app-name.up.railway.app
+NEXTAUTH_URL=https://yb-store-001-production.up.railway.app
 NEXTAUTH_SECRET=ihr-super-sicherer-secret-key-hier
 
 # Store Konfiguration
