@@ -143,7 +143,7 @@ export default function DesignStudioPage() {
                   <TabsContent value="colors" className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium mb-2">Primärfarbe</label>
+                        <label className="block text-sm font-bold text-gray-900 mb-2">Primärfarbe</label>
                         <div className="flex items-center space-x-2">
                           <Input
                             type="color"
@@ -155,11 +155,12 @@ export default function DesignStudioPage() {
                             value={settings.colors.primary}
                             onChange={(e) => updateSettings("colors", "primary", e.target.value)}
                             placeholder="#3b82f6"
+                            className="font-mono text-gray-800"
                           />
                         </div>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-2">Sekundärfarbe</label>
+                        <label className="block text-sm font-bold text-gray-900 mb-2">Sekundärfarbe</label>
                         <div className="flex items-center space-x-2">
                           <Input
                             type="color"
@@ -171,6 +172,7 @@ export default function DesignStudioPage() {
                             value={settings.colors.secondary}
                             onChange={(e) => updateSettings("colors", "secondary", e.target.value)}
                             placeholder="#64748b"
+                            className="font-mono text-gray-800"
                           />
                         </div>
                       </div>
