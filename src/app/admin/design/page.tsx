@@ -100,7 +100,7 @@ export default function DesignStudioPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Design Studio</h1>
-            <p className="text-gray-600">Passen Sie das Aussehen Ihres Shops an</p>
+            <p className="text-gray-800">Passen Sie das Aussehen Ihres Shops an</p>
           </div>
           <div className="flex space-x-3">
             <Button variant="outline" onClick={resetToDefault}>

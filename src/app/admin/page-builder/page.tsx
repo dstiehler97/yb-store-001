@@ -269,7 +269,7 @@ function BlockEditor({ block, onUpdate }: {
       )
     default:
       return (
-        <div className="text-gray-500 text-sm">
+        <div className="text-gray-800 text-sm">
           Keine besonderen Einstellungen verfügbar
         </div>
       )
@@ -386,7 +386,7 @@ export default function PageBuilderPage() {
               </CardHeader>
               <CardContent>
                 {blocks.length === 0 ? (
-                  <div className="text-center py-12 text-gray-500">
+                  <div className="text-center py-12 text-gray-800">
                     <Square className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>Noch keine Blöcke vorhanden</p>
                     <p className="text-sm">Klicken Sie auf einen Block links, um zu beginnen</p>

@@ -138,7 +138,7 @@ export default function PagesPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Seiten</h1>
-            <p className="text-gray-600">Verwalten Sie Ihre Website-Seiten mit dem Page Builder</p>
+            <p className="text-gray-800">Verwalten Sie Ihre Website-Seiten mit dem Page Builder</p>
           </div>
           
           <Button onClick={handleCreatePage} className="w-full sm:w-auto">
@@ -153,7 +153,7 @@ export default function PagesPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Gesamt</p>
+                  <p className="text-sm font-medium text-gray-800">Gesamt</p>
                   <p className="text-2xl font-bold text-gray-900">{pages.length}</p>
                 </div>
                 <FileText className="w-8 h-8 text-blue-600" />
@@ -165,7 +165,7 @@ export default function PagesPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Veröffentlicht</p>
+                  <p className="text-sm font-medium text-gray-800">Veröffentlicht</p>
                   <p className="text-2xl font-bold text-green-600">
                     {pages.filter(p => p.published).length}
                   </p>
@@ -179,7 +179,7 @@ export default function PagesPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Entwürfe</p>
+                  <p className="text-sm font-medium text-gray-800">Entwürfe</p>
                   <p className="text-2xl font-bold text-orange-600">
                     {pages.filter(p => !p.published).length}
                   </p>
@@ -193,7 +193,7 @@ export default function PagesPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Aufrufe heute</p>
+                  <p className="text-sm font-medium text-gray-800">Aufrufe heute</p>
                   <p className="text-2xl font-bold text-purple-600">
                     {pages.reduce((sum, p) => sum + (p.views || 0), 0)}
                   </p>
@@ -261,7 +261,7 @@ export default function PagesPage() {
                       </Badge>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-800">
                       <span className="font-mono bg-gray-100 px-2 py-1 rounded">
                         /{page.slug}
                       </span>
@@ -337,7 +337,7 @@ export default function PagesPage() {
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
                   Keine Seiten gefunden
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-800 mb-6">
                   {searchTerm || filterStatus !== "all" 
                     ? "Versuchen Sie es mit anderen Suchbegriffen oder Filtern."
                     : "Erstellen Sie Ihre erste Seite mit dem Page Builder."

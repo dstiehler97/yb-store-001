@@ -93,11 +93,11 @@ export default function AdminDashboardPage() {
                   <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
                       <p className="font-medium">Bestellung #{1000 + i}</p>
-                      <p className="text-sm text-gray-600">Max Mustermann</p>
+                      <p className="text-sm text-gray-800">Max Mustermann</p>
                     </div>
                     <div className="text-right">
                       <p className="font-medium">€{(Math.random() * 100 + 50).toFixed(2)}</p>
-                      <p className="text-sm text-gray-600">Vor {i} Stunden</p>
+                      <p className="text-sm text-gray-800">Vor {i} Stunden</p>
                     </div>
                   </div>
                 ))}
@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
                   <div key={product} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
                       <p className="font-medium">{product}</p>
-                      <p className="text-sm text-gray-600">{20 - i * 3} verkauft</p>
+                      <p className="text-sm text-gray-800">{20 - i * 3} verkauft</p>
                     </div>
                     <div className="text-right">
                       <p className="font-medium">€{(Math.random() * 50 + 25).toFixed(2)}</p>
