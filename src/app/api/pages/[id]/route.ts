@@ -6,11 +6,12 @@ const prisma = new PrismaClient()
 // GET - Einzelne Seite
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const page = await prisma.page.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!page) {
@@ -27,9 +28,10 @@ export async function GET(
 // PUT - Update Seite
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json()
     const { title, slug, published, content } = body
 
@@ -38,7 +40,7 @@ export async function PUT(
       const existingPage = await prisma.page.findFirst({
         where: {
           slug,
-          NOT: { id: params.id }
+          NOT: { id }
         }
       })
 
@@ -48,7 +50,7 @@ export async function PUT(
     }
 
     const page = await prisma.page.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(title && { title }),
         ...(slug && { slug }),
@@ -67,11 +69,12 @@ export async function PUT(
 // DELETE - Lösche Seite
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     await prisma.page.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ success: true })

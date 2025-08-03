@@ -37,46 +37,49 @@ export default function PagesPage() {
   const [filterStatus, setFilterStatus] = useState<"all" | "published" | "draft">("all")
   const [isLoading, setIsLoading] = useState(true)
 
-  // Mock data - später durch API ersetzen
+  // Load pages from API
   useEffect(() => {
-    const mockPages: Page[] = [
-      {
-        id: "1",
-        title: "Startseite",
-        slug: "home",
-        published: true,
-        content: { blocks: [] },
-        createdAt: "2025-01-15",
-        updatedAt: "2025-01-20",
-        views: 1250
-      },
-      {
-        id: "2", 
-        title: "Über uns",
-        slug: "about",
-        published: true,
-        content: { blocks: [] },
-        createdAt: "2025-01-10",
-        updatedAt: "2025-01-18",
-        views: 890
-      },
-      {
-        id: "3",
-        title: "Kontakt",
-        slug: "contact", 
-        published: false,
-        content: { blocks: [] },
-        createdAt: "2025-01-22",
-        updatedAt: "2025-01-22",
-        views: 0
-      }
-    ]
-    
-    setTimeout(() => {
-      setPages(mockPages)
-      setIsLoading(false)
-    }, 500)
+    loadPages()
   }, [])
+
+  const loadPages = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch('/api/pages')
+      if (response.ok) {
+        const data = await response.json()
+        setPages(data)
+      } else {
+        console.error('Failed to load pages')
+      }
+    } catch (error) {
+      console.error('Error loading pages:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleDeletePage = async (pageId: string) => {
+    if (!confirm('Sind Sie sicher, dass Sie diese Seite löschen möchten?')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/pages/${pageId}`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        setPages(prev => prev.filter(page => page.id !== pageId))
+        alert('Seite erfolgreich gelöscht')
+      } else {
+        throw new Error('Failed to delete page')
+      }
+    } catch (error) {
+      console.error('Error deleting page:', error)
+      alert('Fehler beim Löschen der Seite')
+    }
+  }
 
   const filteredPages = pages.filter(page => {
     const matchesSearch = page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -94,7 +97,7 @@ export default function PagesPage() {
   }
 
   const handleEditPage = (pageId: string) => {
-    router.push(`/admin/seiten/${pageId}/bearbeiten`)
+    router.push(`/admin/seiten/${pageId}`)
   }
 
   const handleViewPage = (slug: string) => {
@@ -104,13 +107,6 @@ export default function PagesPage() {
   const handleDuplicatePage = (pageId: string) => {
     // Page duplizieren
     console.log("Duplicate page:", pageId)
-  }
-
-  const handleDeletePage = (pageId: string) => {
-    // Page löschen mit Bestätigung
-    if (confirm("Sind Sie sicher, dass Sie diese Seite löschen möchten?")) {
-      setPages(pages.filter(p => p.id !== pageId))
-    }
   }
 
   const togglePublishStatus = (pageId: string) => {

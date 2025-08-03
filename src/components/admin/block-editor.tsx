@@ -17,10 +17,10 @@ interface Block {
 interface BlockEditorProps {
   block: Block
   onSave: (block: Block) => void
-  onClose: () => void
+  onCancel: () => void
 }
 
-export default function BlockEditor({ block, onSave, onClose }: BlockEditorProps) {
+export default function BlockEditor({ block, onSave, onCancel }: BlockEditorProps) {
   const [editedBlock, setEditedBlock] = useState<Block>(block)
 
   const updateContent = (key: string, value: string | number) => {
@@ -35,7 +35,7 @@ export default function BlockEditor({ block, onSave, onClose }: BlockEditorProps
 
   const handleSave = () => {
     onSave(editedBlock)
-    onClose()
+    onCancel()
   }
 
   const renderEditor = () => {
@@ -288,7 +288,7 @@ export default function BlockEditor({ block, onSave, onClose }: BlockEditorProps
     <Card className="w-full max-w-md">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-lg">Block bearbeiten</CardTitle>
-        <Button variant="ghost" size="sm" onClick={onClose}>
+        <Button variant="ghost" size="sm" onClick={onCancel}>
           <X className="w-4 h-4" />
         </Button>
       </CardHeader>
@@ -303,7 +303,7 @@ export default function BlockEditor({ block, onSave, onClose }: BlockEditorProps
           <Button onClick={handleSave} className="flex-1">
             Speichern
           </Button>
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onCancel}>
             Abbrechen
           </Button>
         </div>
