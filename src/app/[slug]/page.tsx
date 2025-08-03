@@ -17,14 +17,19 @@ interface PageProps {
 }
 
 async function getPage(slug: string) {
-  const page = await prisma.page.findUnique({
-    where: { 
-      slug,
-      published: true 
-    },
-  })
+  try {
+    const page = await prisma.page.findUnique({
+      where: { 
+        slug,
+        published: true 
+      },
+    })
 
-  return page
+    return page
+  } catch (error) {
+    console.error("Database connection failed:", error)
+    return null
+  }
 }
 
 interface PageProps {
@@ -65,12 +70,18 @@ export default async function DynamicPage({ params }: PageProps) {
 }
 
 export async function generateStaticParams() {
-  const pages = await prisma.page.findMany({
-    where: { published: true },
-    select: { slug: true }
-  })
+  try {
+    const pages = await prisma.page.findMany({
+      where: { published: true },
+      select: { slug: true }
+    })
 
-  return pages.map((page: { slug: string }) => ({
-    slug: page.slug,
-  }))
+    return pages.map((page: { slug: string }) => ({
+      slug: page.slug,
+    }))
+  } catch {
+    console.warn("⚠️ Database not reachable during build (Railway). Using fallback.")
+    console.warn("This is normal on Railway - pages will be generated dynamically on first request.")
+    return []
+  }
 }
