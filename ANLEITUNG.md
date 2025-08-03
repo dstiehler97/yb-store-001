@@ -52,7 +52,7 @@ Fügen Sie folgende Environment Variables in Railway hinzu:
 DATABASE_URL=postgresql://...
 
 # NextAuth
-NEXTAUTH_URL=https://yb-store-001-production.up.railway.app
+NEXTAUTH_URL=https://IHREN-PROJEKT-NAME.up.railway.app
 NEXTAUTH_SECRET=ihr-super-sicherer-secret-key-hier
 
 # Store Konfiguration
