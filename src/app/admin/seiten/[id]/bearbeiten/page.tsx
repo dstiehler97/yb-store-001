@@ -9,13 +9,11 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { 
   Save, 
-  Eye, 
   ArrowLeft,
   Globe,
   Smartphone,
   Tablet,
   Monitor,
-  Settings,
   Plus,
   GripVertical,
   Trash2,
@@ -44,7 +42,7 @@ import { CSS } from '@dnd-kit/utilities'
 interface Block {
   id: string
   type: 'hero' | 'text' | 'image' | 'button' | 'product-grid' | 'spacer'
-  content: any
+  content: Record<string, unknown>
 }
 
 interface PageData {
@@ -84,13 +82,13 @@ function SortableBlock({ block, onEdit, onDelete }: {
         return (
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 rounded-lg text-center">
             <h1 className="text-2xl font-bold mb-4">
-              {block.content.title || 'Hero Titel'}
+              {(block.content.title as string) || 'Hero Titel'}
             </h1>
             <p className="text-lg mb-6">
-              {block.content.subtitle || 'Hero Untertitel'}
+              {(block.content.subtitle as string) || 'Hero Untertitel'}
             </p>
             <div className="inline-block bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold">
-              {block.content.buttonText || 'Button Text'}
+              {(block.content.buttonText as string) || 'Button Text'}
             </div>
           </div>
         )
@@ -100,7 +98,7 @@ function SortableBlock({ block, onEdit, onDelete }: {
           <div className="p-6 bg-gray-50 rounded-lg">
             <div className="prose">
               <p className="text-gray-800">
-                {block.content.text || 'Text Inhalt hier...'}
+                {(block.content.text as string) || 'Text Inhalt hier...'}
               </p>
             </div>
           </div>
@@ -110,7 +108,7 @@ function SortableBlock({ block, onEdit, onDelete }: {
         return (
           <div className="p-6 bg-gray-100 rounded-lg text-center">
             <div className="w-full h-32 bg-gray-300 rounded-lg flex items-center justify-center">
-              <span className="text-gray-600">Bild: {block.content.alt || 'Bild'}</span>
+              <span className="text-gray-600">Bild: {(block.content.alt as string) || 'Bild'}</span>
             </div>
           </div>
         )
@@ -120,9 +118,9 @@ function SortableBlock({ block, onEdit, onDelete }: {
           <div className="p-6 text-center">
             <button 
               className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold"
-              style={{ backgroundColor: block.content.color || '#3B82F6' }}
+              style={{ backgroundColor: (block.content.color as string) || '#3B82F6' }}
             >
-              {block.content.text || 'Button Text'}
+              {(block.content.text as string) || 'Button Text'}
             </button>
           </div>
         )
@@ -131,7 +129,7 @@ function SortableBlock({ block, onEdit, onDelete }: {
         return (
           <div className="p-6 bg-gray-50 rounded-lg">
             <h3 className="text-lg font-semibold mb-4">
-              {block.content.title || 'Produkte'}
+              {(block.content.title as string) || 'Produkte'}
             </h3>
             <div className="grid grid-cols-3 gap-4">
               {[1, 2, 3].map(i => (
@@ -149,10 +147,10 @@ function SortableBlock({ block, onEdit, onDelete }: {
         return (
           <div 
             className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
-            style={{ height: `${block.content.height || 50}px` }}
+            style={{ height: `${(block.content.height as number) || 50}px` }}
           >
             <span className="text-gray-500 text-sm">
-              Abstand: {block.content.height || 50}px
+              Abstand: {(block.content.height as number) || 50}px
             </span>
           </div>
         )
@@ -225,7 +223,6 @@ export default function PageEditPage() {
   
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
   const [isSaving, setIsSaving] = useState(false)
-  const [editingBlock, setEditingBlock] = useState<Block | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -571,7 +568,7 @@ export default function PageEditPage() {
                             <SortableBlock
                               key={block.id}
                               block={block}
-                              onEdit={setEditingBlock}
+                              onEdit={() => {}}
                               onDelete={deleteBlock}
                             />
                           ))

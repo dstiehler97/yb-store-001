@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdminLayout from "@/components/admin/layout"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -14,11 +14,9 @@ import {
   Eye,
   Copy,
   Search,
-  Filter,
   Globe,
   FileText,
-  Calendar,
-  MoreVertical
+  Calendar
 } from "lucide-react"
 
 interface Page {
@@ -26,7 +24,7 @@ interface Page {
   title: string
   slug: string
   published: boolean
-  content: any
+  content: Record<string, unknown>
   createdAt: string
   updatedAt: string
   views?: number

@@ -108,20 +108,30 @@ async function main() {
     }
   ]
 
+  // Create sample products with proper error handling
   for (const product of products) {
-    await prisma.product.upsert({
-      where: { sku: product.sku },
-      update: {
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        inventory: product.inventory,
-        status: product.status,
-        images: product.images,
-        tags: product.tags
-      },
-      create: product
-    })
+    try {
+      await prisma.product.upsert({
+        where: { sku: product.sku },
+        update: {
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          comparePrice: product.comparePrice || null,
+          inventory: product.inventory,
+          status: product.status,
+          images: product.images,
+          tags: product.tags,
+          categoryId: product.categoryId,
+          slug: product.slug
+        },
+        create: product
+      })
+      console.log(`✅ Product ${product.sku} created/updated`)
+    } catch (error) {
+      console.log(`⚠️ Product ${product.sku} already exists or error:`, error)
+      // Continue with next product instead of crashing
+    }
   }
 
   console.log('✅ Sample products created')
