@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import AdminLayout from '@/components/admin/layout'
 import PageBuilder from '@/components/admin/page-builder'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
@@ -27,12 +28,20 @@ export default function EditPagePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [pageId, setPageId] = useState<string | null>(null)
+
+  // Extract pageId from params
+  useEffect(() => {
+    if (params?.id) {
+      setPageId(params.id as string)
+    }
+  }, [params])
 
   useEffect(() => {
-    if (params.id) {
-      loadPage(params.id as string)
+    if (pageId) {
+      loadPage(pageId)
     }
-  }, [params.id])
+  }, [pageId])
 
   const loadPage = async (id: string) => {
     try {
@@ -42,7 +51,14 @@ export default function EditPagePage() {
         throw new Error('Seite konnte nicht geladen werden')
       }
       const pageData = await response.json()
-      setPage(pageData)
+      
+      // Convert content to blocks if needed
+      const blocks = pageData.content?.blocks || []
+      
+      setPage({
+        ...pageData,
+        blocks
+      })
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten')
     } finally {
@@ -61,7 +77,7 @@ export default function EditPagePage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          blocks,
+          content: { blocks },
         }),
       })
 
@@ -70,7 +86,10 @@ export default function EditPagePage() {
       }
 
       const updatedPage = await response.json()
-      setPage(updatedPage)
+      setPage({
+        ...updatedPage,
+        blocks: updatedPage.content?.blocks || blocks
+      })
       
       // Success message (you could use a toast library here)
       alert('Seite erfolgreich gespeichert!')
@@ -108,71 +127,77 @@ export default function EditPagePage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-lg">Seite wird geladen...</div>
+      <AdminLayout>
+        <div className="container mx-auto py-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-lg">Seite wird geladen...</div>
+          </div>
         </div>
-      </div>
+      </AdminLayout>
     )
   }
 
   if (error || !page) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center gap-4 mb-6">
-          <Link href="/admin/seiten">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Zurück
-            </Button>
-          </Link>
+      <AdminLayout>
+        <div className="container mx-auto py-8">
+          <div className="flex items-center gap-4 mb-6">
+            <Link href="/admin/seiten">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Zurück
+              </Button>
+            </Link>
+          </div>
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            {error || 'Seite nicht gefunden'}
+          </div>
         </div>
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-          {error || 'Seite nicht gefunden'}
-        </div>
-      </div>
+      </AdminLayout>
     )
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <Link href="/admin/seiten">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Zurück
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Seite bearbeiten</h1>
-            <p className="text-gray-600">{page.title}</p>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <Button
-            variant={page.published ? "default" : "outline"}
-            onClick={handlePublishToggle}
-          >
-            {page.published ? "Veröffentlicht" : "Unveröffentlicht"}
-          </Button>
-          
-          {page.published && (
-            <Link href={`/${page.slug}`} target="_blank">
-              <Button variant="outline">
-                Seite ansehen
+    <AdminLayout>
+      <div className="container mx-auto py-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <Link href="/admin/seiten">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Zurück
               </Button>
             </Link>
-          )}
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Seite bearbeiten</h1>
+              <p className="text-gray-600">{page.title}</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <Button
+              variant={page.published ? "default" : "outline"}
+              onClick={handlePublishToggle}
+            >
+              {page.published ? "Veröffentlicht" : "Unveröffentlicht"}
+            </Button>
+            
+            {page.published && (
+              <Link href={`/${page.slug}`} target="_blank">
+                <Button variant="outline">
+                  Seite ansehen
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
 
-      <PageBuilder
-        blocks={page.blocks}
-        onSave={handleSave}
-        isSaving={isSaving}
-      />
-    </div>
+        <PageBuilder
+          blocks={page.blocks}
+          onSave={handleSave}
+          isSaving={isSaving}
+        />
+      </div>
+    </AdminLayout>
   )
 }
