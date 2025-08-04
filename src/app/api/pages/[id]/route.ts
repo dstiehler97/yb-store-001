@@ -49,7 +49,7 @@ export async function PUT(
       }
     }
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (title) updateData.title = title
     if (slug) updateData.slug = slug
     if (published !== undefined) updateData.published = published

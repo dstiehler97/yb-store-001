@@ -56,12 +56,6 @@ export default function PageBuilder({ blocks: initialBlocks, onSave, isSaving = 
     setBlocks(prev => [...prev, newBlock])
   }
 
-  const updateBlock = (blockId: string, content: Record<string, unknown>) => {
-    setBlocks(prev => prev.map(block => 
-      block.id === blockId ? { ...block, content } : block
-    ))
-  }
-
   const deleteBlock = (blockId: string) => {
     setBlocks(prev => prev.filter(block => block.id !== blockId))
     if (selectedBlock?.id === blockId) {
