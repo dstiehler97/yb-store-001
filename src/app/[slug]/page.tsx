@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import BlockRenderer from '@/components/block-renderer'
-
-const prisma = new PrismaClient()
 
 interface Block {
   id: string
@@ -40,6 +38,12 @@ interface PageProps {
 
 export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params
+  
+  // Verhindere, dass root "/" von dieser Route verarbeitet wird
+  if (!slug || slug === '') {
+    notFound()
+  }
+  
   const page = await getPage(slug)
 
   if (!page) {
