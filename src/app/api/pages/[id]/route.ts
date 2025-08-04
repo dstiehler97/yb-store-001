@@ -33,6 +33,8 @@ export async function PUT(
     const body = await request.json()
     const { title, slug, published, content } = body
 
+    console.log('Updating page with content:', JSON.stringify(content, null, 2))
+
     // Check if slug already exists (but not for this page)
     if (slug) {
       const existingPage = await prisma.page.findFirst({
@@ -47,15 +49,20 @@ export async function PUT(
       }
     }
 
+    const updateData: any = {}
+    if (title) updateData.title = title
+    if (slug) updateData.slug = slug
+    if (published !== undefined) updateData.published = published
+    if (content) updateData.content = content
+
+    console.log('Update data:', JSON.stringify(updateData, null, 2))
+
     const page = await prisma.page.update({
       where: { id },
-      data: {
-        ...(title && { title }),
-        ...(slug && { slug }),
-        ...(published !== undefined && { published }),
-        ...(content && { content })
-      }
+      data: updateData
     })
+
+    console.log('Updated page content:', JSON.stringify(page.content, null, 2))
 
     return NextResponse.json(page)
   } catch (error) {

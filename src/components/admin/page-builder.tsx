@@ -77,7 +77,9 @@ export default function PageBuilder({ blocks: initialBlocks, onSave, isSaving = 
 
   const handleEditorSave = (updatedBlock: Block) => {
     if (selectedBlock) {
-      updateBlock(selectedBlock.id, updatedBlock.content)
+      setBlocks(prev => prev.map(block => 
+        block.id === selectedBlock.id ? updatedBlock : block
+      ))
       setIsEditing(false)
       setSelectedBlock(null)
     }

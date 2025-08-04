@@ -55,8 +55,19 @@ export default async function DynamicPage({ params }: PageProps) {
     ? (content as { blocks: Block[] }).blocks 
     : []
 
+  // Debug log
+  console.log('Page content:', page.content)
+  console.log('Extracted blocks:', blocks)
+
   return (
     <div className="min-h-screen">
+      {/* Debug Info (nur in Development) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="bg-yellow-100 p-2 text-xs">
+          Blocks: {blocks.length} | Content: {JSON.stringify(page.content)}
+        </div>
+      )}
+      
       {/* Page Header */}
       <head>
         <title>{page.title} | YB Store</title>
@@ -65,9 +76,15 @@ export default async function DynamicPage({ params }: PageProps) {
 
       {/* Render Blocks */}
       <div className="space-y-0">
-        {blocks.map((block) => (
-          <BlockRenderer key={block.id} block={block} />
-        ))}
+        {blocks.length > 0 ? (
+          blocks.map((block, index) => (
+            <BlockRenderer key={`${block.id}-${index}`} block={block} />
+          ))
+        ) : (
+          <div className="p-8 text-center text-gray-500">
+            Keine Inhalte vorhanden. Bearbeiten Sie diese Seite im Admin-Bereich.
+          </div>
+        )}
       </div>
     </div>
   )
